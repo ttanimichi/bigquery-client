@@ -1,7 +1,7 @@
 # BigQuery Client
 
 [![Gem Version](https://badge.fury.io/rb/bigquery-client.svg)](http://badge.fury.io/rb/bigquery-client)
-[![Build Status](https://travis-ci.org/ttanimichi/bigquery-client.png)](https://travis-ci.org/ttanimichi/bigquery-client)
+[![Build Status](https://travis-ci.org/ttanimichi/bigquery-client.svg)](https://travis-ci.org/ttanimichi/bigquery-client)
 
 A Ruby interface to the BigQuery API.
 

@@ -6,48 +6,14 @@ require 'google/api_client/auth/compute_service_account'
 
 module BigQuery
   class Client
+    include BigQuery::Datasets
+    include BigQuery::Jobs
+    include BigQuery::Projects
+    include BigQuery::Tabledata
+    include BigQuery::Tables
+
     def initialize(attributes = {})
       attributes.each { |name, value| instance_variable_set("@#{name}", value) }
-    end
-
-    def insert(table, args)
-      rows = args.is_a?(Array) ? args : [args]
-      result = access_api(
-        api_method: bigquery.tabledata.insert_all,
-        parameters: {
-          tableId: table
-        },
-        body_object: {
-          rows: rows.map { |row| { json: row } }
-        }
-      )
-      handle_error(result) if result.error?
-    end
-
-    def create_table(name, schema)
-      result = access_api(
-        api_method: bigquery.tables.insert,
-        body_object: {
-          tableReference: {
-            tableId: name
-          },
-          schema: {
-            fields: schema
-          }
-        }
-      )
-      handle_error(result) if result.error?
-    end
-
-    def fetch_schema(table)
-      result = access_api(
-        api_method: bigquery.tables.get,
-        parameters: {
-          tableId: table
-        }
-      )
-      handle_error(result) if result.error?
-      JSON.parse(result.body)['schema']['fields']
     end
 
     private

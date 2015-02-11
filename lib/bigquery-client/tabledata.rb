@@ -15,5 +15,15 @@ module BigQuery
       )
       handle_error(result) if result.error?
     end
+
+    def list_table(table)
+      result = access_api(
+        api_method: bigquery.tabledata.list,
+        parameters: {
+          tableId: table
+        }
+      )
+      JSON.parse(result.body)
+    end
   end
 end

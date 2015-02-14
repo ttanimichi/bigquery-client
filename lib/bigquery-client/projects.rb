@@ -2,13 +2,14 @@
 
 module BigQuery
   module Projects
+    def projects
+      list_projects['projects'].map {|project| project['id'] }
+    end
+
     def list_projects
-      result = access_api(
-        api_method: bigquery.projects.list,
-        parameters: {
-        }
+      access_api(
+        api_method: bigquery.projects.list
       )
-      JSON.parse(result.body)
     end
   end
 end

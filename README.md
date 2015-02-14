@@ -25,37 +25,35 @@ client = BigQuery::Client.new(
   auth_method:            "private_key"
 )
 
-client.show hoge hoge
-
+client.insert("your_table", uid: "john", age: 42)
 ```
 
 ## Available API methods
 
-ref. https://cloud.google.com/bigquery/docs/reference/v2/
+https://cloud.google.com/bigquery/docs/reference/v2/
 
-| Resource type | Method          | Function           | Support               |
-|---------------|-----------------|--------------------|:---------------------:|
-| Tables        | delete          | `drop_table`       | :white_check_mark:    |
-| Tables        | get             | `fetch_table_info` | :white_check_mark:    |
-| Tables        | get             | `fetch_schema`     | :white_check_mark:    |
-| Tables        | insert          | `create_table`     | :white_check_mark:    |
-| Tables        | list            | `list_tables`      | :white_check_mark:    |
-| Tables        | patch           | `patch_table`      | :white_check_mark:    |
-| Tables        | update          | `update_table`     | :white_check_mark:    |
-| Tabledata     | insertAll       |                    | :white_medium_square: |
-| Tabledata     | list            | `list_table`       | :white_check_mark:    |
-| Datasets      | delete          |                    | :white_medium_square: |
-| Datasets      | get             |                    | :white_medium_square: |
-| Datasets      | insert          |                    | :white_medium_square: |
-| Datasets      | list            | `list_datasets`    | :white_check_mark:    |
-| Datasets      | patch           |                    | :white_medium_square: |
-| Datasets      | update          |                    | :white_medium_square: |
-| Jobs          | get             |                    | :white_medium_square: |
-| Jobs          | getQueryResults |                    | :white_medium_square: |
-| Jobs          | insert          |                    | :white_medium_square: |
-| Jobs          | list            |                    | :white_medium_square: |
-| Jobs          | query           |                    | :white_medium_square: |
-| Projects      | list            | `list_projects`    | :white_check_mark:    |
+| Resource type | Method          | Function                      | Support               |
+|---------------|-----------------|-------------------------------|:---------------------:|
+| Tabledata     | insertAll       | `insert`                      | :white_check_mark:    |
+| Tabledata     | list            | `table_data`                  | :white_check_mark:    |
+| Tables        | list            | `tables`                      | :white_check_mark:    |
+| Tables        | get             | `fetch_schema`, `fetch_table` | :white_check_mark:    |
+| Tables        | insert          | `create_table`                | :white_check_mark:    |
+| Tables        | patch           | `patch_table`                 | :white_check_mark:    |
+| Tables        | update          | `update_table`                | :white_check_mark:    |
+| Tables        | delete          | `delete_table`                | :white_check_mark:    |
+| Jobs          | query           | `sql`                         | :white_check_mark:    |
+| Jobs          | insert          | `load`                        | :white_check_mark:    |
+| Jobs          | list            | `jobs`                        | :white_check_mark:    |
+| Jobs          | get             | `fetch_job`                   | :white_check_mark:    |
+| Jobs          | getQueryResults | `query_results`               | :white_check_mark:    |
+| Datasets      | list            | `datasets`                    | :white_check_mark:    |
+| Datasets      | get             | `fetch_dataset`               | :white_medium_square: |
+| Datasets      | insert          | `create_dataset`              | :white_medium_square: |
+| Datasets      | patch           | `patch_dataset`               | :white_medium_square: |
+| Datasets      | update          | `update_dataset`              | :white_medium_square: |
+| Datasets      | delete          | `delete_dataset`              | :white_medium_square: |
+| Projects      | list            | `projects`                    | :white_check_mark:    |
 
 ## Usage
 
@@ -85,6 +83,9 @@ client.fetch_schema("your_table")
 ## TODO
 
 - [ ] Support all API methods
+- [ ] Improve `load`
+  - Support load-from-GCS flow and POST-request flow
+  - ref. https://cloud.google.com/bigquery/loading-data-into-bigquery
 - [ ] Support OAuth installed application credentials
 - [ ] Google API discovery expiration
 

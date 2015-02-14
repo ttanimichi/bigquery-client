@@ -2,77 +2,79 @@
 
 module BigQuery
   module Tables
-    def create_table(name, schema)
-      result = access_api(
+    def tables(options = {})
+      (list_tables(options)['tables'] || []).map {|t| t['tableReference']['tableId'] }
+    end
+
+    def list_tables(options = {})
+      access_api(
+        api_method: bigquery.tables.list,
+        parameters: options
+      )
+    end
+
+    def fetch_schema(table)
+      fetch_table(table)['schema']['fields']
+    end
+
+    def fetch_table(table)
+      access_api(
+        api_method: bigquery.tables.get,
+        parameters: {
+          tableId: table
+        }
+      )
+    end
+
+    def create_table(table, schema)
+      access_api(
         api_method: bigquery.tables.insert,
         body_object: {
           tableReference: {
-            tableId: name
+            tableId: table
           },
           schema: {
             fields: schema
           }
         }
       )
-      handle_error(result) if result.error?
     end
 
-    def list_tables(options = {})
-      result = access_api(
-        api_method: bigquery.tables.list,
-        parameters: options
-      )
-      handle_error(result) if result.error?
-      JSON.parse(result.body)
-    end
-
-    def update_table(name, options = {})
-      result = access_api(
-        api_method: bigquery.tables.update,
-        parameters: {
-          tableId: name
-        },
-        body_object: options
-      )
-      handle_error(result) if result.error?
-      JSON.parse(result.body)
-    end
-
-    def patch_table(name, options = {})
-      result = access_api(
+    def patch_table(table, schema)
+      access_api(
         api_method: bigquery.tables.patch,
         parameters: {
-          tableId: name
+          tableId: table
         },
-        body_object: options
+        body_object: {
+          schema: {
+            fields: schema
+          }
+        }
       )
-      handle_error(result) if result.error?
-      JSON.parse(result.body)
     end
 
-    def fetch_schema(table)
-      fetch_table_info(table)['schema']['fields']
+    def update_table(table, schema)
+      access_api(
+        api_method: bigquery.tables.update,
+        parameters: {
+          tableId: table
+        },
+        body_object: {
+          schema: {
+            fields: schema
+          }
+        }
+      )
     end
 
-    def fetch_table_info(table)
-      result = access_api(
-        api_method: bigquery.tables.get,
+    def delete_table(table)
+      access_api(
+        api_method: bigquery.tables.delete,
         parameters: {
           tableId: table
         }
       )
-      handle_error(result) if result.error?
-      JSON.parse(result.body)
-    end
-
-    def drop_table(name)
-      result = access_api(
-        api_method: bigquery.tables.delete,
-        parameters: {
-          tableId: name
-        }
-      )
-      handle_error(result) if result.error?
     end
   end
 end

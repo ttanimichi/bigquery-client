@@ -22,7 +22,9 @@ module BigQuery
       params[:parameters] ||= {}
       params[:parameters][:projectId] ||= @project
       params[:parameters][:datasetId] ||= @dataset
-      client.execute(params)
+      result = client.execute(params)
+      handle_error(result) if result.error?
+      JSON.parse(result.body) unless result.body.empty?
     end
 
     def bigquery

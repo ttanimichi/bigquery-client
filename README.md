@@ -24,48 +24,46 @@ client = BigQuery::Client.new(
   auth_method:            "private_key"
 )
 
-client.show hoge hoge
-
+client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
 ```
 
 ## Available API methods
 
-ref. https://cloud.google.com/bigquery/docs/reference/v2/
+https://cloud.google.com/bigquery/docs/reference/v2/
 
-| Resource type | Method          | Function           | Support               |
-|---------------|-----------------|--------------------|:---------------------:|
-| Tables        | delete          | `drop_table`       | :white_check_mark:    |
-| Tables        | get             | `fetch_table_info` | :white_check_mark:    |
-| Tables        | get             | `fetch_schema`     | :white_check_mark:    |
-| Tables        | insert          | `create_table`     | :white_check_mark:    |
-| Tables        | list            | `list_tables`      | :white_check_mark:    |
-| Tables        | patch           | `patch_table`      | :white_check_mark:    |
-| Tables        | update          | `update_table`     | :white_check_mark:    |
-| Tabledata     | insertAll       |                    | :white_medium_square: |
-| Tabledata     | list            | `list_table`       | :white_check_mark:    |
-| Datasets      | delete          |                    | :white_medium_square: |
-| Datasets      | get             |                    | :white_medium_square: |
-| Datasets      | insert          |                    | :white_medium_square: |
-| Datasets      | list            | `list_datasets`    | :white_check_mark:    |
-| Datasets      | patch           |                    | :white_medium_square: |
-| Datasets      | update          |                    | :white_medium_square: |
-| Jobs          | get             |                    | :white_medium_square: |
-| Jobs          | getQueryResults |                    | :white_medium_square: |
-| Jobs          | insert          |                    | :white_medium_square: |
-| Jobs          | list            |                    | :white_medium_square: |
-| Jobs          | query           |                    | :white_medium_square: |
-| Projects      | list            | `list_projects`    | :white_check_mark:    |
+| Resource type | Method          | Function                      | Support               |
+|---------------|-----------------|-------------------------------|:---------------------:|
+| Tabledata     | insertAll       | `insert`, `insert_all`        | :white_check_mark:    |
+| Tabledata     | list            | `list_tabledata`              | :white_check_mark:    |
+| Tables        | list            | `tables`, `list_tables`       | :white_check_mark:    |
+| Tables        | get             | `fetch_schema`, `fetch_table` | :white_check_mark:    |
+| Tables        | insert          | `create_table`                | :white_check_mark:    |
+| Tables        | patch           | `patch_table`                 | :white_check_mark:    |
+| Tables        | update          | `update_table`                | :white_check_mark:    |
+| Tables        | delete          | `delete_table`                | :white_check_mark:    |
+| Jobs          | query           | `sql`, `jobs_query`           | :white_check_mark:    |
+| Jobs          | insert          | `load`                        | :white_check_mark:    |
+| Jobs          | list            | `jobs`                        | :white_check_mark:    |
+| Jobs          | get             | `fetch_job`                   | :white_check_mark:    |
+| Jobs          | getQueryResults | `query_results`               | :white_check_mark:    |
+| Datasets      | list            | `datasets`, `list_datasets`   | :white_check_mark:    |
+| Datasets      | get             | `fetch_dataset`               | :white_medium_square: |
+| Datasets      | insert          | `create_dataset`              | :white_check_mark:    |
+| Datasets      | patch           | `patch_dataset`               | :white_medium_square: |
+| Datasets      | update          | `update_dataset`              | :white_medium_square: |
+| Datasets      | delete          | `delete_dataset`              | :white_check_mark:    |
+| Projects      | list            | `projects`, `list_projects`   | :white_check_mark:    |
 
 ## Usage
 
 ```ruby
 # insert
-client.insert("your_table", uid: "john", age: 42)
+client.insert("your_table", nickname: "john", age: 42)
 
 # insert multiple rows
 rows = [
-  { uid: "foo", age: 43 },
-  { uid: "bar", age: 44 }
+  { nickname: "foo", age: 43 },
+  { nickname: "bar", age: 44 }
 ]
 client.insert("your_table", rows)
 
@@ -76,16 +74,65 @@ schema = [
 ]
 client.create_table("new_table", schema)
 
+# SQL
+client.sql "SELECT * FROM your_dataset.your_table LIMIT 100"
+
+# SQL (public data)
+client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
+
+# tables
+client.tables
+#=> ["your_table", "your_table2", "your_table3"]
+
+# datasets
+client.datasets
+#=> ["your_dataset", "your_dataset2"]
+
 # fetch schema
 client.fetch_schema("your_table")
-#=> [{"name"=>"uid", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
+#=> [{"name"=>"nickname", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
+
+# delete table
+client.delete_table('your_table')
+
+# create dataset
+client.create_dataset('your_dataset')
+
+# delete dataset
+client.delete_dataset('your_dataset')
 ```
 
 ## TODO
 
 - [ ] Support all API methods
+- [ ] Improve `load`
+  - Support load-from-GCS flow and POST-request flow
+  - ref. https://cloud.google.com/bigquery/loading-data-into-bigquery
 - [ ] Support OAuth installed application credentials
 - [ ] Google API discovery expiration
+
+## How to run tests
+
+Please create a file named `.env` on the root of this repository. You can use `.env.example` file as a template.
+
+```
+% cp .env.example .env
+```
+
+and edit `.env` file properly.
+
+```
+BIGQUERY_PROJECT=your-project-42
+BIGQUERY_EMAIL=1234567890@developer.gserviceaccount.com
+BIGQUERY_PRIVATE_KEY_PATH=/path/to/keyfile.p12
+```
+
+Then run tests.
+
+```
+% bundle install
+% bundle exec rake
+```
 
 ## Contributing
 

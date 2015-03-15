@@ -24,7 +24,7 @@ client = BigQuery::Client.new(
   auth_method:            "private_key"
 )
 
-client.insert("your_table", uid: "john", age: 42)
+client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
 ```
 
 ## Available API methods

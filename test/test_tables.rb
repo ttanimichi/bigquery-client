@@ -12,7 +12,7 @@ class TablesTest < Test::Unit::TestCase
     table_name = 'test_fetch_schema'
     schema = [{ name: 'bar', type: 'string' }]
     $client.create_table(table_name, schema)
-    result = $client.fetch_schema('test_fetch_schema')
+    result = $client.fetch_schema(table_name)
     assert { result == [{"name"=>"bar", "type"=>"STRING"}] }
   end
 

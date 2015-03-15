@@ -111,6 +111,29 @@ client.delete_dataset('your_dataset')
 - [ ] Support OAuth installed application credentials
 - [ ] Google API discovery expiration
 
+# How to run tests
+
+Please create a file named `.env` on the root of this repository. You can use `.env.example` file as a template.
+
+```
+cp .env.example .env
+```
+
+and edit `.env` file properly.
+
+```
+BIGQUERY_PROJECT=your-project-42
+BIGQUERY_EMAIL=1234567890@developer.gserviceaccount.com
+BIGQUERY_PRIVATE_KEY_PATH=/path/to/keyfile.p12
+```
+
+Then run tests.
+
+```
+% bundle install
+% bundle exec rake
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/ttanimichi/bigquery-client/fork )

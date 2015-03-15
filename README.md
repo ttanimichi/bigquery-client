@@ -74,23 +74,32 @@ schema = [
 ]
 client.create_table("new_table", schema)
 
-# fetch schema
-client.fetch_schema("your_table")
-#=> [{"name"=>"nickname", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
-
 # SQL
-client.sql "SELECT * FROM my_dataset.my_table LIMIT 100"
+client.sql "SELECT * FROM your_dataset.your_table LIMIT 100"
 
 # SQL (public data)
 client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
 
 # tables
 client.tables
-#=> ["my_table", "my_table2", "my_table3"]
+#=> ["your_table", "your_table2", "your_table3"]
 
 # datasets
 client.datasets
-#=> ["my_dataset", "my_dataset2"]
+#=> ["your_dataset", "your_dataset2"]
+
+# fetch schema
+client.fetch_schema("your_table")
+#=> [{"name"=>"nickname", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
+
+# delete table
+client.delete_table('your_table')
+
+# create dataset
+client.create_dataset('your_dataset')
+
+# delete dataset
+client.delete_dataset('your_dataset')
 ```
 
 ## TODO

@@ -19,5 +19,4 @@ class JobsTest < Test::Unit::TestCase
     assert { result.sample["mother_residence_state"].is_a? String }
     assert { result.sample["is_male"] == true || result.first["is_male"] == false }
   end
-
 end

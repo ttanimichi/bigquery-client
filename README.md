@@ -33,26 +33,26 @@ https://cloud.google.com/bigquery/docs/reference/v2/
 
 | Resource type | Method          | Function                      | Support               |
 |---------------|-----------------|-------------------------------|:---------------------:|
-| Tabledata     | insertAll       | `insert`                      | :white_check_mark:    |
-| Tabledata     | list            | `table_data`                  | :white_check_mark:    |
-| Tables        | list            | `tables`                      | :white_check_mark:    |
+| Tabledata     | insertAll       | `insert`, `insert_all`        | :white_check_mark:    |
+| Tabledata     | list            | `list_tabledata`              | :white_check_mark:    |
+| Tables        | list            | `tables`, `list_tables`       | :white_check_mark:    |
 | Tables        | get             | `fetch_schema`, `fetch_table` | :white_check_mark:    |
 | Tables        | insert          | `create_table`                | :white_check_mark:    |
 | Tables        | patch           | `patch_table`                 | :white_check_mark:    |
 | Tables        | update          | `update_table`                | :white_check_mark:    |
 | Tables        | delete          | `delete_table`                | :white_check_mark:    |
-| Jobs          | query           | `sql`                         | :white_check_mark:    |
+| Jobs          | query           | `sql`, `jobs_query`           | :white_check_mark:    |
 | Jobs          | insert          | `load`                        | :white_check_mark:    |
 | Jobs          | list            | `jobs`                        | :white_check_mark:    |
 | Jobs          | get             | `fetch_job`                   | :white_check_mark:    |
 | Jobs          | getQueryResults | `query_results`               | :white_check_mark:    |
-| Datasets      | list            | `datasets`                    | :white_check_mark:    |
+| Datasets      | list            | `datasets`, `list_datasets`   | :white_check_mark:    |
 | Datasets      | get             | `fetch_dataset`               | :white_medium_square: |
-| Datasets      | insert          | `create_dataset`              | :white_medium_square: |
+| Datasets      | insert          | `create_dataset`              | :white_check_mark:    |
 | Datasets      | patch           | `patch_dataset`               | :white_medium_square: |
 | Datasets      | update          | `update_dataset`              | :white_medium_square: |
-| Datasets      | delete          | `delete_dataset`              | :white_medium_square: |
-| Projects      | list            | `projects`                    | :white_check_mark:    |
+| Datasets      | delete          | `delete_dataset`              | :white_check_mark:    |
+| Projects      | list            | `projects`, `list_projects`   | :white_check_mark:    |
 
 ## Usage
 

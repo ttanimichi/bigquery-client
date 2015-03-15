@@ -111,7 +111,7 @@ client.delete_dataset('your_dataset')
 - [ ] Support OAuth installed application credentials
 - [ ] Google API discovery expiration
 
-# How to run tests
+## How to run tests
 
 Please create a file named `.env` on the root of this repository. You can use `.env.example` file as a template.
 

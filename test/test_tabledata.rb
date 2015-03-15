@@ -21,7 +21,7 @@ class TablesTest < Test::Unit::TestCase
   def test_list_tabledata
     table_name = 'test_list_tabledata'
     schema = [{ name: 'bar', type: 'string' }]
-    result = $client.list_tabledata('test_list_tabledata')
+    result = $client.list_tabledata(table_name)
     assert { result['kind'] == "bigquery#tableDataList" }
   end
 end

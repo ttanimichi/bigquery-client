@@ -116,7 +116,7 @@ client.delete_dataset('your_dataset')
 Please create a file named `.env` on the root of this repository. You can use `.env.example` file as a template.
 
 ```
-cp .env.example .env
+% cp .env.example .env
 ```
 
 and edit `.env` file properly.

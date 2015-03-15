@@ -2,13 +2,47 @@
 
 module BigQuery
   module Datasets
+    def datasets
+      list_datasets['datasets'].map {|dataset| dataset['datasetReference']['datasetId'] }
+    end
+
     def list_datasets
-      result = access_api(
-        api_method: bigquery.datasets.list,
-        parameters: {
+      access_api(
+        api_method: bigquery.datasets.list
+      )
+    end
+
+    def fetch_dataset
+      raise NotImplementedError
+    end
+
+    def create_dataset(name)
+      access_api(
+        api_method: bigquery.datasets.insert,
+        body_object: {
+          datasetReference: {
+            datasetId: name
+          }
         }
       )
-      JSON.parse(result.body)
+    end
+
+    def patch_dataset
+      raise NotImplementedError
+    end
+
+    def update_dataset
+      raise NotImplementedError
+    end
+
+    def delete_dataset(name)
+      access_api(
+        api_method: bigquery.datasets.delete,
+        parameters: {
+          datasetId: name,
+          deleteContents: true
+        }
+      )
     end
   end
 end

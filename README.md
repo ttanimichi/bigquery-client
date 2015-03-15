@@ -58,12 +58,12 @@ https://cloud.google.com/bigquery/docs/reference/v2/
 
 ```ruby
 # insert
-client.insert("your_table", uid: "john", age: 42)
+client.insert("your_table", nickname: "john", age: 42)
 
 # insert multiple rows
 rows = [
-  { uid: "foo", age: 43 },
-  { uid: "bar", age: 44 }
+  { nickname: "foo", age: 43 },
+  { nickname: "bar", age: 44 }
 ]
 client.insert("your_table", rows)
 
@@ -76,7 +76,21 @@ client.create_table("new_table", schema)
 
 # fetch schema
 client.fetch_schema("your_table")
-#=> [{"name"=>"uid", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
+#=> [{"name"=>"nickname", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
+
+# SQL
+client.sql "SELECT * FROM my_dataset.my_table LIMIT 100"
+
+# SQL (public data)
+client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
+
+# tables
+client.tables
+#=> ["my_table", "my_table2", "my_table3"]
+
+# datasets
+client.datasets
+#=> ["my_dataset", "my_dataset2"]
 ```
 
 ## TODO

@@ -14,8 +14,9 @@ module BigQuery
         }
       )
     end
+    alias_method :insert_all, :insert
 
-    def table_data(table)
+    def list_tabledata(table)
       access_api(
         api_method: bigquery.tabledata.list,
         parameters: {

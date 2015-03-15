@@ -17,4 +17,11 @@ class TablesTest < Test::Unit::TestCase
     result = $client.insert(table_name, rows)
     assert { result['kind'] == 'bigquery#tableDataInsertAllResponse' }
   end
+
+  def test_list_tabledata
+    table_name = 'test_list_tabledata'
+    schema = [{ name: 'bar', type: 'string' }]
+    result = $client.list_tabledata('test_list_tabledata')
+    assert { result['kind'] == "bigquery#tableDataList" }
+  end
 end

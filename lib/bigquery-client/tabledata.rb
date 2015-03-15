@@ -2,9 +2,9 @@
 
 module BigQuery
   module Tabledata
-    def insert(table, args)
-      rows = args.is_a?(Array) ? args : [args]
-      result = access_api(
+    def insert(table, arg)
+      rows = arg.is_a?(Array) ? arg : [arg]
+      access_api(
         api_method: bigquery.tabledata.insert_all,
         parameters: {
           tableId: table
@@ -13,17 +13,16 @@ module BigQuery
           rows: rows.map { |row| { json: row } }
         }
       )
-      handle_error(result) if result.error?
     end
+    alias_method :insert_all, :insert
 
-    def list_table(table)
-      result = access_api(
+    def list_tabledata(table)
+      access_api(
         api_method: bigquery.tabledata.list,
         parameters: {
           tableId: table
         }
       )
-      JSON.parse(result.body)
     end
   end
 end

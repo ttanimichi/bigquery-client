@@ -17,6 +17,6 @@ class JobsTest < Test::Unit::TestCase
     assert { result.size == 100 }
     assert { result.sample["born_alive_alive"].is_a? Fixnum }
     assert { result.sample["mother_residence_state"].is_a? String }
-    assert { result.sample["is_male"] == true || result.first["is_male"] == false }
+    assert { result.first["is_male"] == true || result.first["is_male"] == false }
   end
 end

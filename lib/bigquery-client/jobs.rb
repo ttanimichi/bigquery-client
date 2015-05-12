@@ -6,7 +6,7 @@ module BigQuery
       result = jobs_query(query, options)
       names = result['schema']['fields'].map {|field| field['name'] }
       types = result['schema']['fields'].map {|field| field['type'] }
-      records = result['rows'].map {|row| row['f'].map {|record| record['v'] } }
+      records = (result['rows'] || []).map {|row| row['f'].map {|record| record['v'] } }
       convert(records, types).map { |values| [names, values].transpose.to_h }
     end
 

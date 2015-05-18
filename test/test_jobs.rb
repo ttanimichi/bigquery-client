@@ -1,7 +1,7 @@
 require 'helper'
 
 class JobsTest < Test::Unit::TestCase
-  @@query = <<-"EOS"
+  @@normal_query = <<-"EOS"
     SELECT
       born_alive_alive, mother_residence_state, is_male
     FROM
@@ -23,8 +23,17 @@ class JobsTest < Test::Unit::TestCase
       0
   EOS
 
+  @@huge_result_query = <<-"EOS"
+    SELECT
+      title
+    FROM
+      publicdata:samples.wikipedia
+    LIMIT
+      1234567
+  EOS
+
   def test_sql
-    result = $client.sql(@@query)
+    result = $client.sql(@@normal_query)
     assert { result.size == 100 }
     assert { result.sample["born_alive_alive"].is_a? Fixnum }
     assert { result.sample["mother_residence_state"].is_a? String }
@@ -34,5 +43,10 @@ class JobsTest < Test::Unit::TestCase
   def test_sql_when_no_rows
     result = $client.sql(@@no_rows_query)
     assert { result == [] }
+  end
+
+  def test_sql_pagination
+    record_size = $client.sql(@@huge_result_query).size
+    assert { record_size == 1234567 }
   end
 end

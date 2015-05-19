@@ -3,10 +3,20 @@
 module BigQuery
   module Jobs
     def sql(query, options = {})
-      result = jobs_query(query, options)
-      names = result['schema']['fields'].map {|field| field['name'] }
-      types = result['schema']['fields'].map {|field| field['type'] }
-      records = (result['rows'] || []).map {|row| row['f'].map {|record| record['v'] } }
+      jobs_query_response = jobs_query(query, options)
+      names = jobs_query_response['schema']['fields'].map {|field| field['name'] }
+      types = jobs_query_response['schema']['fields'].map {|field| field['type'] }
+      records = extract_records(jobs_query_response)
+
+      page_token = jobs_query_response['pageToken']
+      job_id = jobs_query_response['jobReference']['jobId']
+      inherited_options = options.select {|k,v| [:maxResults, :timeoutMs].include?(k) }
+      while page_token
+        query_results_response = query_results(job_id, inherited_options.merge({ pageToken: page_token }))
+        records += extract_records(query_results_response)
+        page_token = query_results_response['pageToken']
+      end
+
       convert(records, types).map { |values| [names, values].transpose.to_h }
     end
 
@@ -51,6 +61,10 @@ module BigQuery
     end
 
     private
+
+    def extract_records(response)
+      (response['rows'] || []).map {|row| row['f'].map {|record| record['v'] } }
+    end
 
     def convert(records, types)
       records.map do |values|

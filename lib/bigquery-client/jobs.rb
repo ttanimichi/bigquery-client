@@ -10,8 +10,9 @@ module BigQuery
 
       page_token = jobs_query_response['pageToken']
       job_id = jobs_query_response['jobReference']['jobId']
+      inherited_options = options.select {|k,v| [:maxResults, :timeoutMs].include?(k) }
       while page_token
-        query_results_response = query_results(job_id, pageToken: page_token)
+        query_results_response = query_results(job_id, inherited_options.merge({ pageToken: page_token }))
         records += extract_records(query_results_response)
         page_token = query_results_response['pageToken']
       end

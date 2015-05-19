@@ -46,7 +46,7 @@ class JobsTest < Test::Unit::TestCase
   end
 
   def test_sql_pagination
-    record_size = $client.sql(@@huge_result_query).size
+    record_size = $client.sql(@@huge_result_query, maxResults: 10000).size
     assert { record_size == 1234567 }
   end
 end

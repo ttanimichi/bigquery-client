@@ -8,6 +8,15 @@ class TablesTest < Test::Unit::TestCase
     assert { $client.tables.include?(table_name) }
   end
 
+  def test_table_pagination
+    5.times do |i|
+      table_name = __method__.to_s + "_#{i.to_s}"
+      schema = [{ name: 'bar', type: 'string' }]
+      $client.create_table(table_name, schema)
+    end
+    assert { $client.tables(maxResults: 1).count == 5 }
+  end
+
   def test_fetch_schema
     table_name = __method__.to_s
     schema = [{ name: 'bar', type: 'string' }]

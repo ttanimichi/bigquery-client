@@ -23,13 +23,13 @@ class JobsTest < Test::Unit::TestCase
       0
   EOS
 
-  @@huge_result_query = <<-"EOS"
+  @@pagination_query = <<-"EOS"
     SELECT
       title
     FROM
       publicdata:samples.wikipedia
     LIMIT
-      1234567
+      123
   EOS
 
   def test_sql
@@ -46,7 +46,6 @@ class JobsTest < Test::Unit::TestCase
   end
 
   def test_sql_pagination
-    record_size = $client.sql(@@huge_result_query, maxResults: 10000).size
-    assert { record_size == 1234567 }
+    assert { $client.sql(@@pagination_query, maxResults: 100).size == 123 }
   end
 end

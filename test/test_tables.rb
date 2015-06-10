@@ -9,12 +9,13 @@ class TablesTest < Test::Unit::TestCase
   end
 
   def test_table_pagination
-    5.times do |i|
+    $client.tables.each {|t| $client.delete_table(t) }
+    3.times do |i|
       table_name = __method__.to_s + "_#{i.to_s}"
       schema = [{ name: 'bar', type: 'string' }]
       $client.create_table(table_name, schema)
     end
-    assert { $client.tables(maxResults: 1).count == 5 }
+    assert { $client.tables(maxResults: 1).count == 3 }
   end
 
   def test_fetch_schema

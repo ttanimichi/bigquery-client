@@ -4,15 +4,15 @@ module BigQuery
   module Jobs
     def sql(query, options = {})
       jobs_query_response = jobs_query(query, options)
-      names = jobs_query_response['schema']['fields'].map {|field| field['name'] }
-      types = jobs_query_response['schema']['fields'].map {|field| field['type'] }
+      fields = jobs_query_response['schema']['fields']
+      names = fields.map {|field| field['name'] }
+      types = fields.map {|field| field['type'] }
       records = extract_records(jobs_query_response)
-
-      page_token = jobs_query_response['pageToken']
       job_id = jobs_query_response['jobReference']['jobId']
-      inherited_options = options.select {|k,v| [:maxResults, :timeoutMs].include?(k) }
+      page_token = jobs_query_response['pageToken']
+
       while page_token
-        query_results_response = query_results(job_id, inherited_options.merge({ pageToken: page_token }))
+        query_results_response = query_results(job_id, { pageToken: page_token }.merge(options))
         records += extract_records(query_results_response)
         page_token = query_results_response['pageToken']
       end

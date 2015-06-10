@@ -3,16 +3,14 @@
 module BigQuery
   module Tables
     def tables(options = {})
-      table_list = []
-      token = nil
-      options[:maxResults] ||= 1000
-      begin
-        response = list_tables(options.merge(pageToken: token))
-        (response['tables'] || []).each do |t|
-          table_list << t['tableReference']['tableId']
-        end
-      end while token = response['nextPageToken']
-      table_list
+      results = []
+      page_token = nil
+
+      loop do
+        response = list_tables({ pageToken: page_token }.merge(options))
+        results += (response['tables'] || []).map {|table| table['tableReference']['tableId'] }
+        return results unless (page_token = response['nextPageToken'])
+      end
     end
 
     def list_tables(options = {})

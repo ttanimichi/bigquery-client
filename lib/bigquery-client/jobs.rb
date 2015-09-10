@@ -74,6 +74,12 @@ module BigQuery
             value.to_i
           when 'BOOLEAN'
             value == 'true'
+          when 'TIMESTAMP'
+            Time.parse value
+          when 'FLOAT'
+            value.to_f
+          when 'STRING'
+            value
           else
             value
           end

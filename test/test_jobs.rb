@@ -3,7 +3,7 @@ require 'helper'
 class JobsTest < Test::Unit::TestCase
   @@normal_query = <<-"EOS"
     SELECT
-      born_alive_alive, mother_residence_state, is_male
+      born_alive_alive, mother_residence_state, is_male, weight_pounds
     FROM
       publicdata:samples.natality
     ORDER BY
@@ -37,6 +37,8 @@ class JobsTest < Test::Unit::TestCase
     assert { result.size == 100 }
     assert { result.sample["born_alive_alive"].is_a? Fixnum }
     assert { result.sample["mother_residence_state"].is_a? String }
+    assert { result.sample["weight_pounds"].is_a? Float }
+    # TODO: Test of TIMESTAMP. Create a table for this test.
     assert { result.first["is_male"] == true || result.first["is_male"] == false }
   end
 

@@ -3,22 +3,29 @@
 module BigQuery
   module Jobs
     def sql(query, options = {})
-      jobs_query_response = jobs_query(query, options)
-      fields = jobs_query_response['schema']['fields']
-      names = fields.map {|field| field['name'] }
-      types = fields.map {|field| field['type'] }
-      records = extract_records(jobs_query_response)
-      job_id = jobs_query_response['jobReference']['jobId']
-      page_token = jobs_query_response['pageToken']
-
-      while page_token
-        query_results_response = query_results(job_id, { pageToken: page_token }.merge(options))
-        records += extract_records(query_results_response)
-        page_token = query_results_response['pageToken']
-      end
-
-      convert(records, types).map { |values| [names, values].transpose.to_h }
+      query(query, options).to_a
     end
+
+    def query(query, options = {})
+      RunQuery.new(self, query, options).call
+    end
+
+      # jobs_query_response = jobs_query(query, options)
+      # fields = jobs_query_response['schema']['fields']
+      # # こいつらはインスタンス変数
+      # names = fields.map {|field| field['name'] } # カラム名
+      # types = fields.map {|field| field['type'] } # カラムの型
+      # # こいつもインスタンス変数
+      # records = extract_records(jobs_query_response)
+      # # jobId がたぶんユニークだから jobId が違ったら結合できないようにする、とか
+      # job_id = jobs_query_response['jobReference']['jobId']
+      # page_token = jobs_query_response['pageToken']
+      # while page_token
+      #   query_results_response = query_results(job_id, { pageToken: page_token }.merge(options))
+      #   records += extract_records(query_results_response)
+      #   page_token = query_results_response['pageToken']
+      # end
+      # convert(records, types).map { |values| [names, values].transpose.to_h }
 
     def jobs_query(query, options = {})
       default = { query: query, timeoutMs: 600_000 }
@@ -58,33 +65,6 @@ module BigQuery
         api_method: bigquery.jobs.get_query_results,
         parameters: { jobId: id }.merge(options)
       )
-    end
-
-    private
-
-    def extract_records(response)
-      (response['rows'] || []).map {|row| row['f'].map {|record| record['v'] } }
-    end
-
-    def convert(records, types)
-      records.map do |values|
-        values.map.with_index do |value, index|
-          case types[index]
-          when 'INTEGER'
-            value.to_i
-          when 'BOOLEAN'
-            value == 'true'
-          when 'TIMESTAMP'
-            Time.parse value
-          when 'FLOAT'
-            value.to_f
-          when 'STRING'
-            value
-          else
-            value
-          end
-        end
-      end
     end
   end
 end

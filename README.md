@@ -54,7 +54,7 @@ https://cloud.google.com/bigquery/docs/reference/v2/
 | Datasets      | delete          | `delete_dataset`              | :white_check_mark:    |
 | Projects      | list            | `projects`, `list_projects`   | :white_check_mark:    |
 
-## Usage
+## Basic Usage
 
 ```ruby
 # insert
@@ -84,22 +84,49 @@ client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
 client.tables
 #=> ["your_table", "your_table2", "your_table3"]
 
-# datasets
-client.datasets
-#=> ["your_dataset", "your_dataset2"]
-
 # fetch schema
 client.fetch_schema("your_table")
 #=> [{"name"=>"nickname", "type"=>"STRING"}, {"name"=>"age", "type"=>"INTEGER"}]
 
 # delete table
 client.delete_table('your_table')
+```
+
+## Datasets API
+
+```ruby
+# No need to specify `:dataset`
+client = BigQuery::Client.new(
+  project:                "your-project-42",
+  email:                  "1234567890@developer.gserviceaccount.com",
+  private_key_path:       "/path/to/keyfile.p12",
+  private_key_passphrase: "notasecret",
+  auth_method:            "private_key"
+)
+
+client.datasets
+#=> ["your_dataset", "your_dataset2"]
 
 # create dataset
 client.create_dataset('your_dataset')
 
 # delete dataset
 client.delete_dataset('your_dataset')
+```
+
+## Projects API
+
+```ruby
+# No need to specify `:project` and `:dataset`
+client = BigQuery::Client.new(
+  email:                  "1234567890@developer.gserviceaccount.com",
+  private_key_path:       "/path/to/keyfile.p12",
+  private_key_passphrase: "notasecret",
+  auth_method:            "private_key"
+)
+
+client.projects
+#=> ["your_project"]
 ```
 
 ## TODO

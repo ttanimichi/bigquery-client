@@ -12,11 +12,11 @@ module BigQuery
     include BigQuery::Tabledata
     include BigQuery::Tables
 
+    private
+
     def initialize(attributes = {})
       attributes.each { |name, value| instance_variable_set("@#{name}", value) }
     end
-
-    private
 
     def access_api(params = {})
       params[:parameters] ||= {}

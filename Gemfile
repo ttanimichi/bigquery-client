@@ -10,6 +10,8 @@ end
 
 group :test do
   gem 'test-unit', '~> 3.0.0'
+  gem "webmock"
+  gem 'vcr'
 end
 
 gemspec

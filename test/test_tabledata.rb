@@ -1,6 +1,6 @@
 require 'helper'
 
-class TablesTest < Test::Unit::TestCase
+class TabledataTest < Test::Unit::TestCase
   def test_insert
     table_name = __method__.to_s
     schema = [{ name: 'bar', type: 'string' }]

@@ -27,9 +27,9 @@ module BigQuery
 
     def fetch_pagenated_result(page_token)
       while page_token
-        query_results_response = @client.query_results(@result.job_id, { pageToken: page_token }.merge(@options))
-        @result.records += extract_records(query_results_response)
-        page_token = query_results_response['pageToken']
+        response = @client.query_results(@result.job_id, { pageToken: page_token }.merge(@options))
+        @result.records += extract_records(response)
+        page_token = response['pageToken']
       end
     end
 

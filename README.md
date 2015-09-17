@@ -78,7 +78,12 @@ client.create_table("new_table", schema)
 client.sql "SELECT * FROM your_dataset.your_table LIMIT 100"
 
 # SQL (public data)
-client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
+client.sql "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
+#=> [{"born_alive_alive"=>0, "is_male"=>true, "weight_pounds"=>8.437090766739999}, {"born_alive_alive"=>2, "is_male"=>true, "weight_pounds"=>6.8122838958}, {"born_alive_alive"=>4, "is_male"=>false, "weight_pounds"=>6.9996768185}]
+
+# query
+client.query "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
+#=> #<struct BigQuery::QueryResult job_id="job_wNWRgrTUJKIi-IUFf9bIqe1mpU8", column_names=["born_alive_alive", "is_male", "weight_pounds"], column_types=["INTEGER", "BOOLEAN", "FLOAT"], records=[["0", "true", "8.437090766739999"], ["2", "true", "6.8122838958"], ["4", "false", "6.9996768185"]]>
 
 # tables
 client.tables

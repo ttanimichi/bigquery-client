@@ -74,12 +74,15 @@ schema = [
 ]
 client.create_table("new_table", schema)
 
-# SQL
+# sql
 client.sql "SELECT * FROM your_dataset.your_table LIMIT 100"
 
-# SQL (public data)
+# sql (public data)
 client.sql "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
 #=> [{"born_alive_alive"=>0, "is_male"=>true, "weight_pounds"=>8.437090766739999}, {"born_alive_alive"=>2, "is_male"=>true, "weight_pounds"=>6.8122838958}, {"born_alive_alive"=>4, "is_male"=>false, "weight_pounds"=>6.9996768185}]
+
+# find_by_sql
+
 
 # query
 client.query "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"

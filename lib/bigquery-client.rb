@@ -1,5 +1,6 @@
 require 'bigquery-client/version'
 require 'bigquery-client/errors'
+require 'bigquery-client/model'
 require 'bigquery-client/query_result'
 require 'bigquery-client/run_query'
 require 'bigquery-client/datasets'

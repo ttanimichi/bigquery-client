@@ -6,6 +6,18 @@ module BigQuery
       query(query, options).to_a
     end
 
+    def find_by_sql(query, options = {})
+      relation = BigQuery::Relation.new
+      sql(query, options).each do |hash|
+        model = BigQuery::Tuple.new
+        hash.each do |k,v|
+          model[k] = v
+        end
+        relation << model
+      end
+      relation
+    end
+
     def query(query, options = {})
       RunQuery.new(self, query, options).call
     end

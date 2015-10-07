@@ -3,5 +3,28 @@
 require "bundler/setup"
 require "bigquery-client"
 
-require "irb"
-IRB.start
+require 'awesome_print'
+require 'pry'
+require 'pry-byebug'
+require 'vcr'
+
+require 'dotenv'
+Dotenv.load
+
+if defined?(PryByebug)
+  Pry.commands.alias_command 'c', 'continue'
+  Pry.commands.alias_command 's', 'step'
+  Pry.commands.alias_command 'n', 'next'
+  Pry.commands.alias_command 'f', 'finish'
+end
+
+client = BigQuery::Client.new(
+  project:                ENV['BIGQUERY_PROJECT'],
+  email:                  ENV['BIGQUERY_EMAIL'],
+  private_key_path:       ENV['BIGQUERY_PRIVATE_KEY_PATH'],
+  dataset:                $dataset,
+  private_key_passphrase: 'notasecret',
+  auth_method:            'private_key'
+)
+
+Pry.start

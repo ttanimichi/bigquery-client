@@ -15,6 +15,7 @@ module BigQuery
 
     private
 
+    # QueryResult オブジェクトを組み立てるのは QueryResult 側でやるべき
     def execute_query
       response = @client.jobs_query(@query, @options)
       fields = response['schema']['fields']

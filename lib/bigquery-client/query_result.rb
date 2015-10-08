@@ -1,5 +1,9 @@
 module BigQuery
   class ResultSet < Struct.new(:job_id, :column_names, :column_types, :records)
+
+
+
+
     def to_a
       records.map {|values|
         values.map.with_index {|value, index|

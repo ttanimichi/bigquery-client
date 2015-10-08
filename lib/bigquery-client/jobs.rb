@@ -7,7 +7,7 @@ module BigQuery
     end
 
     def find_by_sql(query, options = {})
-      result_set = query(query, options)
+      result = query(query, options)
       BigQuery::Relation.build(result.column_names, result.column_types, result.records)
     end
 

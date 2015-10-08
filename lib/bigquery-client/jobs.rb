@@ -7,15 +7,8 @@ module BigQuery
     end
 
     def find_by_sql(query, options = {})
-      relation = BigQuery::Relation.new
-      sql(query, options).each do |hash|
-        model = BigQuery::Tuple.new
-        hash.each do |k,v|
-          model[k] = v
-        end
-        relation << model
-      end
-      relation
+      result_set = query(query, options)
+      BigQuery::Relation.build(result.column_names, result.column_types, result.records)
     end
 
     def query(query, options = {})

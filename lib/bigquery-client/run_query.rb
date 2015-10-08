@@ -7,7 +7,7 @@ module BigQuery
     end
 
     def call
-      @result = QueryResult.new
+      @result = ResultSet.new
       page_token = execute_query
       fetch_pagenated_result(page_token)
       @result
@@ -15,7 +15,7 @@ module BigQuery
 
     private
 
-    # QueryResult オブジェクトを組み立てるのは QueryResult 側でやるべき
+    # ResultSet オブジェクトを組み立てるのは ResultSet 側でやるべき
     def execute_query
       response = @client.jobs_query(@query, @options)
       fields = response['schema']['fields']

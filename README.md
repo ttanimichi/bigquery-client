@@ -86,7 +86,7 @@ client.sql "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:sample
 
 # query
 client.query "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
-#=> #<struct BigQuery::QueryResult job_id="job_wNWRgrTUJKIi-IUFf9bIqe1mpU8", column_names=["born_alive_alive", "is_male", "weight_pounds"], column_types=["INTEGER", "BOOLEAN", "FLOAT"], records=[["0", "true", "8.437090766739999"], ["2", "true", "6.8122838958"], ["4", "false", "6.9996768185"]]>
+#=> #<struct BigQuery::ResultSet job_id="job_wNWRgrTUJKIi-IUFf9bIqe1mpU8", column_names=["born_alive_alive", "is_male", "weight_pounds"], column_types=["INTEGER", "BOOLEAN", "FLOAT"], records=[["0", "true", "8.437090766739999"], ["2", "true", "6.8122838958"], ["4", "false", "6.9996768185"]]>
 
 # tables
 client.tables

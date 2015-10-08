@@ -15,7 +15,6 @@ module BigQuery
 
     private
 
-    # ResultSet オブジェクトを組み立てるのは ResultSet 側でやるべき
     def execute_query
       response = @client.jobs_query(@query, @options)
       fields = response['schema']['fields']

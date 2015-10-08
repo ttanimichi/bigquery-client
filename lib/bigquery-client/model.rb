@@ -16,7 +16,7 @@ module BigQuery
     attr_reader :attributes
 
     def initialize(names, types, values)
-      @attributes = [names, types, values].transpose.map do |array|
+      @attributes = [values, types, names].transpose.map do |array|
         Attribute.build(*array)
       end
     end
@@ -35,18 +35,18 @@ module BigQuery
   class Attribute
     attr_reader :name, :type, :value
 
-    def self.build(name, type, value)
+    def self.build(value, type, name = nil)
       case type
       when 'INTEGER'
-        Attribute::Integer.new(name, type, value)
+        Attribute::Integer.new(value, type, name)
       when 'BOOLEAN'
-        Attribute::Boolean.new(name, type, value)
+        Attribute::Boolean.new(value, type, name)
       when 'TIMESTAMP'
-        Attribute::Timestamp.new(name, type, value)
+        Attribute::Timestamp.new(value, type, name)
       when 'FLOAT'
-        Attribute::Float.new(name, type, value)
+        Attribute::Float.new(value, type, name)
       when 'STRING'
-        Attribute::String.new(name, type, value)
+        Attribute::String.new(value, type, name)
       when 'RECORD'
       # TODO: Add all types
       else
@@ -55,10 +55,10 @@ module BigQuery
       end
     end
 
-    def initialize(name, type, value)
-      @name  = name
-      @type  = type
+    def initialize(value, type, name)
       @value = value
+      @type  = type
+      @name  = name
     end
 
     class Integer < Attribute

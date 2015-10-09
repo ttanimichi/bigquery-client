@@ -1,5 +1,3 @@
-require 'ostruct'
-
 module BigQuery
   class Relation < Array
     attr_accessor :schema
@@ -19,12 +17,12 @@ module BigQuery
       @attributes = [values, types, names].transpose.map do |array|
         Attribute.build(*array)
       end
-    end
 
-    def method_missing(method_name, *args)
-      attribute = attributes_hash[method_name.to_s]
-      super unless attribute
-      attribute.parse
+      @attributes.each do |attribute|
+        define_singleton_method(attribute.name) do
+          attribute.parse
+        end
+      end
     end
 
     def attributes_hash

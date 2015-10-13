@@ -2,7 +2,7 @@ module BigQuery
   module Attribute
     class TIMESTAMP < Base
       def parse
-        Time.parse @value
+        Time.at(@value.to_f)
       end
     end
   end

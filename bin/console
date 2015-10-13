@@ -22,7 +22,7 @@ client = BigQuery::Client.new(
   project:                ENV['BIGQUERY_PROJECT'],
   email:                  ENV['BIGQUERY_EMAIL'],
   private_key_path:       ENV['BIGQUERY_PRIVATE_KEY_PATH'],
-  dataset:                $dataset,
+  dataset:                'test_bigquery_client_default',
   private_key_passphrase: 'notasecret',
   auth_method:            'private_key'
 )

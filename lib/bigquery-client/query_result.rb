@@ -3,7 +3,7 @@ module BigQuery
     def to_a
       records.map {|record|
         values = record.map.with_index do |value, index|
-          Attribute.build(value, column_types[index]).parse
+          Attribute.new(value, column_types[index]).parse
         end
         [column_names, values].transpose.to_h
       }

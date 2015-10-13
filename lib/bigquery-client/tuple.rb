@@ -21,13 +21,5 @@ module BigQuery
     def attributes_hash
       @attributes_hash ||= [@attributes.map(&:name), @attributes].transpose.to_h
     end
-
-    def inspect
-      @values
-    end
-
-    def to_s
-      attributes
-    end
   end
 end

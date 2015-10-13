@@ -3,6 +3,7 @@ module BigQuery
   class Relation < Array
 
     # そしたら accessor も不要なはず
+    # コンストラクタのなかでインスタンス変数に設定できる
     attr_accessor :schema
 
     def self.build(column_names, column_types, records)

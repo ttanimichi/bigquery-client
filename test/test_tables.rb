@@ -1,6 +1,6 @@
 require 'helper'
 
-class TablesTest < Test::Unit::TestCase
+class TablesTest < ApiTest
   def test_tables
     table_name = __method__.to_s
     schema = [{ name: 'bar', type: 'string' }]

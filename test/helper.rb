@@ -40,7 +40,7 @@ VCR.use_cassette("helper") do
   $client.create_dataset($dataset)
 end
 
-Test::Unit::TestCase.class_eval do
+class ApiTest < Test::Unit::TestCase
   def setup
     VCR.insert_cassette("#{self.class}_#{@method_name}")
   end

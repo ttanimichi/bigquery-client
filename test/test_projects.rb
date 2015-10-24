@@ -1,6 +1,6 @@
 require 'helper'
 
-class ProjectsTest < Test::Unit::TestCase
+class ProjectsTest < ApiTest
   def test_projects
     assert { $client.projects.include? ENV['BIGQUERY_PROJECT'] }
   end

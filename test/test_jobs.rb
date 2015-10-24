@@ -1,6 +1,6 @@
 require 'helper'
 
-class JobsTest < Test::Unit::TestCase
+class JobsTest < ApiTest
   NORMAL_QUERY = <<-"EOS"
     SELECT
       born_alive_alive, mother_residence_state, is_male, weight_pounds

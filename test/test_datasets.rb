@@ -1,6 +1,6 @@
 require 'helper'
 
-class DatasetsTest < Test::Unit::TestCase
+class DatasetsTest < ApiTest
   def test_datasets
     dataset_name = "#{$prefix}_#{__method__}"
     unless $client.datasets.include?(dataset_name)

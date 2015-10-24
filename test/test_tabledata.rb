@@ -5,8 +5,16 @@ class TabledataTest < Test::Unit::TestCase
     table_name = __method__.to_s
     schema = [{ name: 'bar', type: 'string' }]
     $client.create_table(table_name, schema)
-    result = $client.insert(table_name, bar: "foo")
-    assert { result['kind'] == 'bigquery#tableDataInsertAllResponse' }
+    assert { $client.insert(table_name, bar: "foo").nil? }
+  end
+
+  def test_insert_invalid_timestamp
+    table_name = __method__.to_s
+    schema = [{ name: 'time', type: 'timestamp' }]
+    $client.create_table(table_name, schema)
+    assert_raise(BigQuery::Tabledata::InsertError) do
+      $client.insert(table_name, time: "invalid_timestamp")
+    end
   end
 
   def test_insert_with_array
@@ -15,8 +23,7 @@ class TabledataTest < Test::Unit::TestCase
     $client.create_table(table_name, schema)
     result = $client.list_tabledata(table_name)
     rows = [{ bar: "foo" },  { bar: "foo2" },  { bar: "foo3" }]
-    result = $client.insert(table_name, rows)
-    assert { result['kind'] == 'bigquery#tableDataInsertAllResponse' }
+    assert { $client.insert(table_name, rows).nil? }
   end
 
   def test_list_tabledata

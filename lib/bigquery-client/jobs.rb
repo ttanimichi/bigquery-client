@@ -3,21 +3,15 @@
 module BigQuery
   module Jobs
     def sql(query, options = {})
-      jobs_query_response = jobs_query(query, options)
-      fields = jobs_query_response['schema']['fields']
-      names = fields.map {|field| field['name'] }
-      types = fields.map {|field| field['type'] }
-      records = extract_records(jobs_query_response)
-      job_id = jobs_query_response['jobReference']['jobId']
-      page_token = jobs_query_response['pageToken']
+      query(query, options).to_a
+    end
 
-      while page_token
-        query_results_response = query_results(job_id, { pageToken: page_token }.merge(options))
-        records += extract_records(query_results_response)
-        page_token = query_results_response['pageToken']
-      end
+    def find_all(query, options = {})
+      raise NotImplementedError
+    end
 
-      convert(records, types).map { |values| [names, values].transpose.to_h }
+    def query(query, options = {})
+      RunQuery.new(self, query, options).call
     end
 
     def jobs_query(query, options = {})
@@ -58,27 +52,6 @@ module BigQuery
         api_method: bigquery.jobs.get_query_results,
         parameters: { jobId: id }.merge(options)
       )
-    end
-
-    private
-
-    def extract_records(response)
-      (response['rows'] || []).map {|row| row['f'].map {|record| record['v'] } }
-    end
-
-    def convert(records, types)
-      records.map do |values|
-        values.map.with_index do |value, index|
-          case types[index]
-          when 'INTEGER'
-            value.to_i
-          when 'BOOLEAN'
-            value == 'true'
-          else
-            value
-          end
-        end
-      end
     end
   end
 end

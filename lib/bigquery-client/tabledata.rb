@@ -3,7 +3,10 @@
 module BigQuery
   module Tabledata
     def insert(table, arg)
-      rows = arg.is_a?(Array) ? arg : [arg]
+      InsertRows.new(self, table, arg).call
+    end
+
+    def insert_all(table, rows)
       access_api(
         api_method: bigquery.tabledata.insert_all,
         parameters: {
@@ -14,7 +17,6 @@ module BigQuery
         }
       )
     end
-    alias_method :insert_all, :insert
 
     def list_tabledata(table)
       access_api(

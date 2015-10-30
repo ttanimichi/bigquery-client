@@ -54,7 +54,7 @@ https://cloud.google.com/bigquery/docs/reference/v2/
 | Datasets      | delete          | `delete_dataset`              | :white_check_mark:    |
 | Projects      | list            | `projects`, `list_projects`   | :white_check_mark:    |
 
-## Usage
+## Basic Usage
 
 ```ruby
 # insert
@@ -74,19 +74,20 @@ schema = [
 ]
 client.create_table("new_table", schema)
 
-# SQL
+# sql
 client.sql "SELECT * FROM your_dataset.your_table LIMIT 100"
 
-# SQL (public data)
-client.sql "SELECT * FROM publicdata:samples.wikipedia LIMIT 10"
+# sql (public data)
+client.sql "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
+#=> [{"born_alive_alive"=>0, "is_male"=>true, "weight_pounds"=>8.437090766739999}, {"born_alive_alive"=>2, "is_male"=>true, "weight_pounds"=>6.8122838958}, {"born_alive_alive"=>4, "is_male"=>false, "weight_pounds"=>6.9996768185}]
+
+# query
+client.query "SELECT born_alive_alive,is_male,weight_pounds FROM publicdata:samples.natality LIMIT 3"
+#=> #<struct BigQuery::ResultSet job_id="job_wNWRgrTUJKIi-IUFf9bIqe1mpU8", column_names=["born_alive_alive", "is_male", "weight_pounds"], column_types=["INTEGER", "BOOLEAN", "FLOAT"], records=[["0", "true", "8.437090766739999"], ["2", "true", "6.8122838958"], ["4", "false", "6.9996768185"]]>
 
 # tables
 client.tables
 #=> ["your_table", "your_table2", "your_table3"]
-
-# datasets
-client.datasets
-#=> ["your_dataset", "your_dataset2"]
 
 # fetch schema
 client.fetch_schema("your_table")
@@ -94,12 +95,43 @@ client.fetch_schema("your_table")
 
 # delete table
 client.delete_table('your_table')
+```
+
+## Datasets API
+
+```ruby
+# No need to specify `:dataset`
+client = BigQuery::Client.new(
+  project:                "your-project-42",
+  email:                  "1234567890@developer.gserviceaccount.com",
+  private_key_path:       "/path/to/keyfile.p12",
+  private_key_passphrase: "notasecret",
+  auth_method:            "private_key"
+)
+
+client.datasets
+#=> ["your_dataset", "your_dataset2"]
 
 # create dataset
 client.create_dataset('your_dataset')
 
 # delete dataset
 client.delete_dataset('your_dataset')
+```
+
+## Projects API
+
+```ruby
+# No need to specify `:project` and `:dataset`
+client = BigQuery::Client.new(
+  email:                  "1234567890@developer.gserviceaccount.com",
+  private_key_path:       "/path/to/keyfile.p12",
+  private_key_passphrase: "notasecret",
+  auth_method:            "private_key"
+)
+
+client.projects
+#=> ["your_project"]
 ```
 
 ## TODO

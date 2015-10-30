@@ -10,9 +10,9 @@ module BigQuery
       end
 
       def call
-        if errors = @client.insert_all(@table, @rows)['insertErrors']
-          handle_errors(errors)
-        end
+        result = @client.insert_all(@table, @rows)
+        handle_errors(result['insertErrors']) if result['insertErrors']
+        result
       end
 
       def handle_errors(errors)

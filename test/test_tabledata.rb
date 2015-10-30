@@ -5,7 +5,7 @@ class TabledataTest < ApiTest
     table_name = __method__.to_s
     schema = [{ name: 'bar', type: 'string' }]
     $client.create_table(table_name, schema)
-    assert { $client.insert(table_name, bar: "foo").nil? }
+    assert { $client.insert(table_name, bar: "foo") == { 'kind' => 'bigquery#tableDataInsertAllResponse' } }
   end
 
   def test_insert_invalid_timestamp
@@ -23,7 +23,7 @@ class TabledataTest < ApiTest
     $client.create_table(table_name, schema)
     result = $client.list_tabledata(table_name)
     rows = [{ bar: "foo" },  { bar: "foo2" },  { bar: "foo3" }]
-    assert { $client.insert(table_name, rows).nil? }
+    assert { $client.insert(table_name, rows) == { 'kind' => 'bigquery#tableDataInsertAllResponse' } }
   end
 
   def test_list_tabledata

@@ -5,7 +5,7 @@ module BigQuery
 
     def self.new(name: nil, type: nil, value: nil)
       class_name = (type[0] || '').upcase + (type[1..-1] || '').downcase
-      if klass = BigQuery::Attribute.const_get(class_name)
+      if klass = const_get(class_name)
         klass.new(name, value)
       else
         fail UnknownType, "unknown type: #{type}"

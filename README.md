@@ -97,6 +97,8 @@ client.fetch_schema("your_table")
 client.delete_table('your_table')
 ```
 
+## load
+
 ## Datasets API
 
 ```ruby

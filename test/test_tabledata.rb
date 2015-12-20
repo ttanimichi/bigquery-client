@@ -12,7 +12,7 @@ class TabledataTest < ApiTest
     table_name = __method__.to_s
     schema = [{ name: 'time', type: 'timestamp' }]
     $client.create_table(table_name, schema)
-    assert_raise(BigQuery::Tabledata::InsertRows::InsertError) do
+    assert_raise(BigQuery::Service::InsertRows::InsertError) do
       $client.insert(table_name, time: "invalid_timestamp")
     end
   end

@@ -11,7 +11,7 @@ module BigQuery
     end
 
     def query(query, options = {})
-      RunQuery.new(self, query, options).call
+      Service::RunQuery.new(self, query, options).call
     end
 
     def jobs_query(query, options = {})

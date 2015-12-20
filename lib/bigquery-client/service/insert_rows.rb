@@ -1,5 +1,5 @@
 module BigQuery
-  module Tabledata
+  module Service
     class InsertRows
       class InsertError < StandardError
       end

@@ -3,7 +3,7 @@
 module BigQuery
   module Tabledata
     def insert(table, arg)
-      InsertRows.new(self, table, arg).call
+      Service::InsertRows.new(self, table, arg).call
     end
 
     def insert_all(table, rows)

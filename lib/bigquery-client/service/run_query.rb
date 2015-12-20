@@ -1,5 +1,5 @@
 module BigQuery
-  module Jobs
+  module Service
     class RunQuery
       def initialize(client, query, options)
         @client, @query, @options = client, query, options

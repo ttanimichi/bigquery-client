@@ -24,7 +24,7 @@ class JobsTest < ApiTest
   def test_sql_timestamp_columns
     table_name = 'test_timestamp'
     $client.create_table(table_name, [{ name: 'time', type: 'timestamp' }])
-    $client.insert(table_name, time: "2015-10-13 20:05:43")
+    $client.insert(table_name, time: "2015-10-13 20:05:43") and sleep 0.2
     result = $client.sql('SELECT * FROM test_bigquery_client_default.test_timestamp LIMIT 1')
     assert { result.last["time"] == Time.parse("2015-10-13 20:05:43 UTC") }
   end

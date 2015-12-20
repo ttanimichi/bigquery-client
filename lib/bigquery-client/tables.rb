@@ -3,14 +3,7 @@
 module BigQuery
   module Tables
     def tables(options = {})
-      results = []
-      page_token = nil
-
-      loop do
-        response = list_tables({ pageToken: page_token }.merge(options))
-        results += (response['tables'] || []).map {|table| table['tableReference']['tableId'] }
-        return results unless (page_token = response['nextPageToken'])
-      end
+      Service::FetchTables.new(self, options).call
     end
 
     def list_tables(options = {})

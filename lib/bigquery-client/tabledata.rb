@@ -10,7 +10,9 @@ module BigQuery
       access_api(
         api_method: bigquery.tabledata.insert_all,
         parameters: {
-          tableId: table
+          tableId: table[:table_id],
+          projectId: table[:project_id],
+          datasetId: table[:dataset_id]
         },
         body_object: {
           rows: rows.map { |row| { json: row } }

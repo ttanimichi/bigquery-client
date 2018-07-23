@@ -68,12 +68,22 @@ module BigQuery
       )
     end
 
-    def delete_table(table)
+    def extract_table(source_table, options = {})
+      default = { sourceTable: source_table }
+      access_api(
+        api_method: bigquery.jobs.insert,
+        body_object: {
+          configuration: {
+            extract: default.merge(options)
+          }
+        }
+      )
+    end
+
+    def delete_table(table, options = {})
       access_api(
         api_method: bigquery.tables.delete,
-        parameters: {
-          tableId: table
-        }
+        parameters: options.merge({ tableId: table })
       )
     end
   end

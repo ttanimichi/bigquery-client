@@ -22,6 +22,18 @@ module BigQuery
       )
     end
 
+    def export_query(query, options = {})
+      default = { query: query, allowLargeResults: true }
+      access_api(
+        api_method: bigquery.jobs.insert,
+        body_object: {
+          configuration: {
+            query: default.merge(options)
+          }
+        }
+      )
+    end
+
     def load(options = {})
       access_api(
         api_method: bigquery.jobs.insert,
